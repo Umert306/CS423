@@ -1,0 +1,57 @@
+pipeline {
+    agent any
+    environment {
+        DEV_ENV = '16.171.3.225'
+        TEST_ENV = '16.171.2.135'
+        STAGING_ENV = '13.60.189.65'
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/Umert306/CS423'
+            }
+        }
+        stage('Build and Test') {
+            when {
+                branch 'dev'
+            }
+            steps {
+                sh 'docker-compose up --build -d'
+                sh 'docker-compose exec backend npm test' // Adjust for your test commands
+            }
+        }
+        stage('Deploy to Dev') {
+            when {
+                branch 'dev'
+            }
+            steps {
+                sh '''
+                scp docker-compose.yml ubuntu@$DEV_ENV:/home/ubuntu/CS423
+                ssh ubuntu@$DEV_ENV "docker-compose up --build -d"
+                '''
+            }
+        }
+        stage('Deploy to Testing') {
+            when {
+                branch 'testing'
+            }
+            steps {
+                sh '''
+                scp docker-compose.yml ubuntu@$TEST_ENV:/home/ubuntu/CS423
+                ssh ubuntu@$TEST_ENV "docker-compose up --build -d"
+                '''
+            }
+        }
+        stage('Deploy to Staging') {
+            when {
+                branch 'main'
+            }
+            steps {
+                sh '''
+                scp docker-compose.yml ubuntu@$STAGING_ENV:/home/ubuntu/CS423
+                ssh ubuntu@$STAGING_ENV "docker-compose up --build -d"
+                '''
+            }
+        }
+    }
+}
