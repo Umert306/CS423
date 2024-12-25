@@ -9,7 +9,7 @@ const App = () => {
 
     const calculateBMI = async () => {
         try {
-            const response = await axios.post("http://16.171.4.129:8000/calculate_bmi/", {
+            const response = await axios.post("http://13.60.195.96:8000/calculate_bmi/", {
                 height: parseFloat(height),
                 weight: parseFloat(weight),
             });
