@@ -13,7 +13,7 @@ FRONTEND_STATUS=$(curl -s -o /dev/null -w "%{http_code}" $FRONTEND_URL)
 #BACKEND_STATUS=$(curl -s -o /dev/null -w "%{http_code}" $BACKEND_URL)
 
 # Validate responses
-if [[ "$FRONTEND_STATUS" -eq 200]]; then
+if [[ "$FRONTEND_STATUS" -eq 200 ]]; then
     echo "Health check passed: Frontend and Backend are reachable."
     exit 0
 else
