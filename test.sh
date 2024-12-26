@@ -3,7 +3,7 @@
 # Application Health Check Test
 
 # Define URLs for health checks
-FRONTEND_URL="http://16.171.177.191:3000"
+FRONTEND_URL="http://16.171.132.193:3000"
 #BACKEND_URL="http://16.171.177.191:8000"
 
 # Check frontend health
